@@ -1,0 +1,2 @@
+FinalProject/sba_project/*.csv filter=lfs diff=lfs merge=lfs -text
+FinalProject/*.csv filter=lfs diff=lfs merge=lfs -text
