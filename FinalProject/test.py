@@ -30,7 +30,7 @@ def display_gross_approval_summary(file_path):
 # --- Example Usage ---
 # IMPORTANT: Replace 'your_data_file.csv' with the actual path to your CSV file.
 # For example: 'data/sba_loans.csv' or '/Users/yourname/Documents/sba_data.csv'
-csv_file_path = '/Users/caitlyndinh/ai-academy/weeks/week4/notebooks/sba_project/2020-present.csv' # <--- CHANGE THIS TO YOUR ACTUAL FILE PATH
+csv_file_path = '/Users/caitlyndinh/ai-academy/FinalProject/sba_project/2020-present.csv' # <--- CHANGE THIS TO YOUR ACTUAL FILE PATH
 
 display_gross_approval_summary(csv_file_path)
 
