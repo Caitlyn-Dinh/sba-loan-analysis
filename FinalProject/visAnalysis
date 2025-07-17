@@ -45,7 +45,7 @@ plt.tight_layout()
 plt.show()
 
 # ======================
-# Plot 4: Loans by Fiscal Year
+# Plot 3: Loans by Fiscal Year
 # ======================
 if 'ApprovalFiscalYear' in df.columns:
     plt.figure(figsize=(10, 5))
@@ -59,7 +59,7 @@ if 'ApprovalFiscalYear' in df.columns:
     plt.show()
 
 # ======================
-# Plot 5: Charge-Off Amount Distribution (Log Scale)
+# Plot 4: Charge-Off Amount Distribution (Log Scale)
 # ======================
 if 'LoanStatus' in df.columns:
     chargeoffs = df[df['LoanStatus'] == 'CHGOFF']
@@ -69,5 +69,82 @@ if 'LoanStatus' in df.columns:
     plt.xlabel("GrossChargeOffAmount ($)")
     plt.tight_layout()
     plt.show()
+
+# ======================
+# Plot 5: Charge-Off Rates by Industry
+# ======================
+industry_chargeoff = df.groupby('NaicsDescription')['ChargeOffDate'].apply(lambda x: x.notna().mean()).sort_values(ascending=False).head(10)
+
+plt.figure(figsize=(10, 6))
+sns.barplot(x=industry_chargeoff.values, y=industry_chargeoff.index)
+plt.title('Top 10 Industries with Highest Charge-Off Rates')
+plt.xlabel('Charge-Off Rate')
+plt.ylabel('NAICS Description')
+plt.tight_layout()
+plt.show()
+
+# ======================
+# Plot 6: Defaulted vs Non-Defaulted Loan Amounts
+# ======================
+
+df['Defaulted'] = df['ChargeOffDate'].notna()
+
+plt.figure(figsize=(10, 6))
+sns.boxplot(data=df, x='Defaulted', y='GrossApproval', showfliers=False)
+plt.title('Loan Amounts: Defaulted vs Non-Defaulted')
+plt.xlabel('Defaulted (Charge-Off)')
+plt.ylabel('Loan Amount')
+plt.yscale('log')
+plt.tight_layout()
+plt.show()
+
+# ======================
+# Plot 7: State-wise Loan Disbursement (Top 15 States)
+# ======================
+
+top_states = df['BorrState'].value_counts().nlargest(15)
+
+plt.figure(figsize=(10, 6))
+sns.barplot(x=top_states.index, y=top_states.values)
+plt.title('Top 15 States by Number of Loans')
+plt.xlabel('State')
+plt.ylabel('Number of Loans')
+plt.tight_layout()
+plt.show()
+
+# ======================
+# Plot 8: Heat Map
+# ======================
+
+# Step 1: Define potential numeric columns
+numeric_cols = [
+    'GrossApproval',
+    'SBAGuaranteedApproval',
+    'InitialInterestRate',
+    'TermInMonths',
+    'CongressionalDistrict',
+    'BusinessAge',
+    'GrossChargeOffAmount',
+    'JobsSupported'
+]
+
+# Step 2: Convert to numeric safely
+heatmap_df = df[numeric_cols].apply(pd.to_numeric, errors='coerce')
+
+# Step 3: Drop constant columns (zero variance)
+heatmap_df = heatmap_df.loc[:, heatmap_df.nunique() > 1]
+
+# Step 4: Drop rows with missing values
+heatmap_df.dropna(inplace=True)
+
+# Step 5: Calculate and plot correlation matrix
+corr_matrix = heatmap_df.corr()
+
+plt.figure(figsize=(12, 8))
+sns.heatmap(corr_matrix, annot=True, fmt=".2f", cmap="coolwarm", linewidths=0.5)
+plt.title("SBA Loan Numeric Feature Correlation Heatmap")
+plt.tight_layout()
+plt.show()
+
 
 print("\n Visual EDA complete.")
