@@ -22,17 +22,17 @@ merged_df['NaicsDescription'] = merged_df['NAICSTITLE']
 
 # === Report rows that failed to map ===
 missing_count = merged_df['NaicsDescription'].isnull().sum()
-print(f"⚠️  NAICS description not found for {missing_count:,} rows.")
+print(f"NAICS description not found for {missing_count:,} rows.")
 
 # Optional: save failed mappings for manual review
 if missing_count > 0:
     unmapped_df = merged_df[merged_df['NaicsDescription'].isnull()]
     unmapped_df.to_csv('/Users/caitlyndinh/ai-academy/FinalProject/unmapped_naics_codes.csv', index=False)
-    print("📝 Unmapped rows saved to 'unmapped_naics_codes.csv'")
+    print("Unmapped rows saved to 'unmapped_naics_codes.csv'")
 
 # === Final cleanup ===
 merged_df.drop(columns=['NAICSCODE', 'NAICSTITLE', 'NaicsCode_clean'], inplace=True)
 
 # === Save the updated dataset ===
 merged_df.to_csv('/Users/caitlyndinh/ai-academy/FinalProject/merged_with_naics.csv', index=False)
-print("✅ NAICS descriptions successfully mapped and saved to 'merged_with_naics.csv'")
+print("NAICS descriptions successfully mapped and saved to 'merged_with_naics.csv'")

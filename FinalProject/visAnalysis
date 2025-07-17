@@ -14,7 +14,7 @@ sns.set_palette("husl")
 # Load data
 df = pd.read_csv('/Users/caitlyndinh/ai-academy/FinalProject/merged_with_naics.csv', low_memory=False)
 
-print("📊 VISUAL EXPLORATORY ANALYSIS")
+print("VISUAL EXPLORATORY ANALYSIS")
 print("=" * 50)
 
 # Clean key numeric columns
@@ -23,35 +23,35 @@ df['JobsSupported'] = pd.to_numeric(df['JobsSupported'], errors='coerce')
 df['GrossChargeOffAmount'] = pd.to_numeric(df['GrossChargeOffAmount'], errors='coerce')
 
 # ======================
-# 📌 Plot 1: Top 10 NAICS Industries by Loan Count
+# Plot 1: Top 10 NAICS Industries by Loan Count
 # ======================
 top_naics = df['NaicsDescription'].value_counts().dropna().head(10)
 plt.figure(figsize=(10, 6))
 sns.barplot(y=top_naics.index, x=top_naics.values)
-plt.title("🏭 Top 10 Industries by Loan Count")
+plt.title("Top 10 Industries by Loan Count")
 plt.xlabel("Loan Count")
 plt.ylabel("NAICS Description")
 plt.tight_layout()
 plt.show()
 
 # ======================
-# 📌 Plot 2: Distribution of Gross Loan Amounts (Log Scale)
+# Plot 2: Distribution of Gross Loan Amounts (Log Scale)
 # ======================
 plt.figure(figsize=(8, 5))
 sns.histplot(df['GrossApproval'], bins=100, kde=True, log_scale=(True, False))
-plt.title("💰 Distribution of Gross Loan Approvals (Log Scale)")
+plt.title("Distribution of Gross Loan Approvals (Log Scale)")
 plt.xlabel("GrossApproval ($)")
 plt.tight_layout()
 plt.show()
 
 # ======================
-# 📌 Plot 4: Loans by Fiscal Year
+# Plot 4: Loans by Fiscal Year
 # ======================
 if 'ApprovalFiscalYear' in df.columns:
     plt.figure(figsize=(10, 5))
     year_counts = df['ApprovalFiscalYear'].value_counts().sort_index()
     sns.barplot(x=year_counts.index.astype(str), y=year_counts.values)
-    plt.title("📅 Number of Loans by Fiscal Year")
+    plt.title("Number of Loans by Fiscal Year")
     plt.xlabel("Fiscal Year")
     plt.ylabel("Number of Loans")
     plt.xticks(rotation=45)
@@ -59,15 +59,15 @@ if 'ApprovalFiscalYear' in df.columns:
     plt.show()
 
 # ======================
-# 📌 Plot 5: Charge-Off Amount Distribution (Log Scale)
+# Plot 5: Charge-Off Amount Distribution (Log Scale)
 # ======================
 if 'LoanStatus' in df.columns:
     chargeoffs = df[df['LoanStatus'] == 'CHGOFF']
     plt.figure(figsize=(8, 5))
     sns.histplot(chargeoffs['GrossChargeOffAmount'], bins=50, kde=True, log_scale=(True, False))
-    plt.title("💸 Distribution of Charge-Off Amounts (Log Scale)")
+    plt.title("Distribution of Charge-Off Amounts (Log Scale)")
     plt.xlabel("GrossChargeOffAmount ($)")
     plt.tight_layout()
     plt.show()
 
-print("\n✅ Visual EDA complete.")
+print("\n Visual EDA complete.")
